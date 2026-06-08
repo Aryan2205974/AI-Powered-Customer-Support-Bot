@@ -48,8 +48,8 @@ def get_current_user(
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
     db: Session = Depends(get_db),
 ) -> models.User:
-    # Allow unauthenticated for demo — return first user
-    if not credentials:
+    # Allow unauthenticated or mock-token for demo — return first user
+    if not credentials or credentials.credentials == "mock-token":
         user = db.query(models.User).first()
         if user:
             return user
